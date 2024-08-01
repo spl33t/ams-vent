@@ -1,10 +1,12 @@
 import { Link } from "atomic-router-react";
 import styled from "styled-components";
 import { router } from "../App";
-import { works } from "../data";
 import { styles } from "../styles";
+import { useUnit } from "effector-react";
+import { $projects } from "../entity/project";
 
-export function Works(props: { title: string; currentWorkSlug?: string }) {
+export function Works(props: { title: string; currentId?: string }) {
+  const projects = useUnit($projects);
   return (
     <>
       <WorksSection>
@@ -14,15 +16,15 @@ export function Works(props: { title: string; currentWorkSlug?: string }) {
         </h4>
 
         <WorksItems>
-          {works.map((item, key) => {
-            if (item.slug !== props.currentWorkSlug)
+          {projects.map((item, key) => {
+            if (item.id !== props.currentId)
               return (
                 <WorkItem key={key}>
                   <swiper-container navigation-next-el={`.works-nav-next-${key}`} navigation-prev-el={`.works-nav-prev-${key}`}>
-                    {item.images.map((image, key) => {
+                    {item.photos.map((file, key) => {
                       return (
                         <swiper-slide key={key}>
-                          <img src={image} />
+                          <img src={file.location} />
                         </swiper-slide>
                       );
                     })}
@@ -31,8 +33,8 @@ export function Works(props: { title: string; currentWorkSlug?: string }) {
                     <div className={`works-nav-prev-${key}`}>←</div>
                     <div className={`works-nav-next-${key}`}>→</div>
                   </div>
-                  <Link className="work-item-title" to={router.routes.worksPage.route} params={{ slug: item.slug }}>
-                    {item.title}
+                  <Link className="work-item-title" to={router.routes.worksPage.route} params={{ id: item.id }}>
+                    {item.name}
                   </Link>
                 </WorkItem>
               );

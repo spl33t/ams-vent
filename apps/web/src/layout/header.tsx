@@ -2,7 +2,7 @@ import { Link } from "atomic-router-react";
 import { useState } from "react";
 import styled, { css } from "styled-components";
 import { router } from "../App";
-import Logo from "./logo.svg"
+import Logo from "./logo.svg";
 
 type MenuItem = {
   name: string;
@@ -12,7 +12,7 @@ type MenuItem = {
 const navItems: MenuItem[] = [{ name: "Наши проекты", href: "/#my-works" }, { name: "Контакты" }];
 
 export function Header(props: { overlayHeader?: boolean }) {
-
+  const overlayHeader = props.overlayHeader || false;
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
@@ -37,7 +37,7 @@ export function Header(props: { overlayHeader?: boolean }) {
           </StyledBurger>
         </HeaderContent>
       </HeaderWrapper>
-      {!props.overlayHeader && <HeaderPadding />}
+      {!overlayHeader && <HeaderPadding />}
     </>
   );
 }
@@ -45,7 +45,7 @@ const styles = {
   headerHeight: "72px",
 };
 const HeaderPadding = styled.div`
-  height: ${styles.headerHeight};
+  padding-top: ${styles.headerHeight};
 `;
 const HeaderNav = styled.nav<{ $isOpen: boolean }>`
   display: flex;

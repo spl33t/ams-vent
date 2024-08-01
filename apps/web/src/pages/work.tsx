@@ -1,15 +1,16 @@
 import { defineRoute } from "../libs/routing";
 import styled from "styled-components";
-import { getWork } from "../data";
 import { Layout } from "../layout";
 import { useState } from "react";
 import { Works } from "../components/works";
+import { useUnit } from "effector-react";
+import { $projects } from "../entity/project";
 
 export const worksPage = defineRoute({
-  path: "/work/:slug",
-  title: "Works",
+  path: "/work/:id",
+  title: "Проект",
   View: (props) => {
-    const work = getWork(props.params.slug);
+    const project = useUnit($projects).find((s) => s.id === props.params.id);
     const [activeSlide, setActiveSlide] = useState(1);
 
     function navCount(action: "prev" | "next") {
@@ -28,19 +29,19 @@ export const worksPage = defineRoute({
       <Layout overlayHeader>
         <SliderWrapper>
           <swiper-container navigation-next-el={`.work-nav-next`} navigation-prev-el={`.work-nav-prev`}>
-            {work?.images.map((imageSrc, key) => {
+            {project?.photos.map((file, key) => {
               return (
                 <swiper-slide key={key}>
-                  <SlideWrapper backgroundurl={imageSrc} />
+                  <SlideWrapper backgroundurl={file.location} />
                 </swiper-slide>
               );
             })}
           </swiper-container>
           <div className="work-info">
-            <h1>{work?.title}</h1>
+            <h1>{project?.name}</h1>
 
             <div className="work-nav">
-              <div> {`${activeSlide}/${work?.images.length}`}</div>
+              <div> {`${activeSlide}/${project?.photos.length}`}</div>
               <div className={`work-nav-prev`} onClick={() => navCount("prev")}>
                 ←
               </div>
@@ -50,7 +51,7 @@ export const worksPage = defineRoute({
             </div>
           </div>
         </SliderWrapper>
-        <Works title="Смотрите другие работы" currentWorkSlug={props.params.slug} />
+        <Works title="Смотрите другие работы" currentId={props.params.id} />
       </Layout>
     );
   },

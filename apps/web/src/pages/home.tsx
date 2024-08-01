@@ -11,7 +11,7 @@ export const homePage = defineRoute({
   View: () => {
     return (
       <>
-        <Layout>
+        <Layout overlayHeader>
           <HeroSlider />
           <Works title="Мои проекты" />
           <ContactForm />
